@@ -10,6 +10,7 @@ from google.adk.runners import Runner
 from google.genai import types
 from dotenv import load_dotenv
 import uuid
+from tools.parametrospost import parametros
 
 load_dotenv()
 
@@ -31,15 +32,7 @@ session = asyncio.run(session_service.create_session(
     session_id=SESSION_ID
 ))
 
-parametros = """
-- Número médio de palavras: 100 a 150
-- Tom de escrita: informal, envolvente e direto ao ponto
-- Uso de emojis: sim, para destacar pontos importantes e tornar o texto mais atrativo
-- Estrutura: frases curtas e parágrafos pequenos para facilitar a leitura
-- Chamada para ação: incluir sempre uma sugestão de interação (curtir, comentar, compartilhar, salvar)
-- Uso de hashtags: de 3 a 5 hashtags relevantes ao tema
-- Público-alvo: linguagem adaptada para jovens adultos e adultos conectados às redes sociais
-"""
+
 redator = LlmAgent(
     name="Redator",
     description="Pesquisa o assunto e escreve um texto claro, conciso e informativo.",
@@ -83,10 +76,10 @@ runner = Runner(
 
 
 
-if __name__ == "__main__":
+def gerarpostassunto(assunto: str) -> str:
     content = types.Content(
         role="user",
-        parts=[types.Part(text="Escreva sobre copo Camelbak.")]
+        parts=[types.Part(text=assunto)]
     )
 
     events = runner.run(
@@ -100,6 +93,11 @@ if __name__ == "__main__":
             e for e in events
             if e.author == "Revisor" and e.is_final_response()
         )
-        print(final.content.parts[0].text)
+        resposta = final.content.parts[0].text
+        return resposta
     except StopIteration:
-        print("❌ Não encontrei a resposta final do Revisor.")
+        return "❌ Não encontrei a resposta final do Revisor."
+
+
+if __name__ == "__main__":
+    gerarpostassunto("Escreva sobre copo Camelbak.")
