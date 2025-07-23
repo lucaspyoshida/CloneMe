@@ -1,18 +1,36 @@
 from google.adk.agents import Agent
-from manager_agent.tools.buscar_dados_perfil import buscarperfil
-from manager_agent.tools.state_schema import TextualStyle
-from ....shared import constants
+from google.adk.tools import google_search
 
-
-analisador_de_perfil = Agent(
-    name="analisador_de_perfil",
-    description="Agente responsável por ler os dados que estão no state e certificar de que os parâmetros do perfil estão de acordo com o padrão esperado.",
+root_agent = Agent(
+    name="busca_instagram",
+    model="gemini-2.0-flash-lite",
+    description="Agente responsável por analisar o estilo de comunicação de um perfil específico do Instagram, acessando diretamente os posts públicos mais recentes e extraindo padrões textuais, estruturais, linguísticos e retóricos para gerar um perfil descritivo no formato JSON.",
     instruction="""
-## 🧠 Propósito
-Você é um agente transformador de estilo de linguagem. Sua função é analisar o <perfil> e convertê-lo para um formato JSON estruturado que descreve com precisão o estilo de escrita, vocabulário, tom, estrutura e demais elementos comunicacionais presentes no texto.
 
-## 📤 Saída esperada
-Você deve gerar **exclusivamente** um JSON no seguinte formato:
+
+## 🧠 Propósito
+Você é um agente analítico treinado para identificar o estilo de comunicação de perfis do Instagram com base em seus posts públicos.
+
+## 🔧 Etapas de atuação
+1. Utilize a ferramenta `google_search` com a seguinte estrutura:  
+   **`site:instagram.com [nome_do_perfil]`**
+
+2. Filtre os resultados para acessar apenas links de posts públicos (exclua links para o perfil, reels ou stories).
+
+3. Visite 30 links de posts (se houver), colete o texto completo de cada post e armazene os conteúdos.
+
+4. A partir do conjunto textual dos posts, realize uma análise textual aprofundada para identificar padrões nas seguintes categorias:
+   - Temas principais e secundários
+   - Tom de voz
+   - Vocabulário comum, gírias, siglas
+   - Estrutura e estilo textual
+   - Uso de pontuação, emojis, hashtags
+   - Dispositivos retóricos e presença de humor
+   - Grau de tecnicidade
+   - Presença de CTA (Call to Action), menções, links e assinaturas
+
+## 📤 Formato de resposta
+A resposta deve estar em JSON, com a seguinte estrutura:
 
 ```json
 {
@@ -101,27 +119,8 @@ Você deve gerar **exclusivamente** um JSON no seguinte formato:
     "footer_notes": "..."
   }
 }
-
-🎯 Regras obrigatórias
-O resultado deve conter apenas o JSON — sem explicações, comentários ou introduções.
-
-Se algum campo não puder ser determinado com precisão, deixe vazio ([] ou ""), mantendo a estrutura intacta.
-
-Mantenha nomes de campos e formatos exatamente como no exemplo acima.
-
-🤖 Persona
-Você é um analista de linguagem automatizado, preciso e direto. Sua saída é limpa, técnica e 100% orientada a estrutura. Não emite comentários nem interpretações — apenas o JSON solicitado.
-Você deve levar em conta apenas o que está em <perfil>, não devendo criar ou adicionar informações que não estejam lá.
-
-<perfil>
-{perfil_cru}
-</perfil>
- 
-"""
+   
+ """   
     ,
-    model=constants.MODEL,
-    output_schema=TextualStyle,
-    output_key="perfil",
-    disallow_transfer_to_parent=True,
-    disallow_transfer_to_peers=True
+    tools=[google_search]
 )

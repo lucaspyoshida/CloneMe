@@ -3,6 +3,8 @@ from typing import List, Literal
 
 
 
+
+
 class Topics(BaseModel):
     main: List[str] = Field(..., description="Tópicos principais dos posts.")
     secondary: List[str] = Field(..., description="Tópicos recorrentes, mas menos frequentes.")
@@ -15,94 +17,80 @@ class Tone(BaseModel):
 class Vocabulary(BaseModel):
     common_terms: List[str] = Field(..., description="Palavras e expressões usadas com frequência.")
     filler_words: List[str] = Field(..., description="Expressões de preenchimento (ex: basicamente, tipo, na real).")
-    colloquialisms: List[str] = Field(..., description="Gírias e coloquialismos (ex: sem mais nem menos).")
+    colloquialisms: List[str] = Field(..., description="Gírias e coloquialismos.")
     preferred_acronyms: List[str] = Field(..., description="Acrônimos preferidos (ex: AI, ML, API).")
 
 class Structure(BaseModel):
     avg_post_length_words: int = Field(..., description="Média de palavras por legenda.")
     avg_sentences_per_paragraph: int = Field(..., description="Média de frases por parágrafo.")
     avg_paragraphs: int = Field(..., description="Média de parágrafos por post.")
-    line_break_style: Literal["quebra_entre_parágrafos", "sem_quebra", "quebra_completa"] = Field(
-        ..., description="Estilo de quebra de linha entre parágrafos."
-    )
-    sentence_complexity: str = Field(..., description="Complexidade das frases (ex: curta, longa, mista).")
+    line_break_style: Literal["quebra_entre_parágrafos", "sem_quebra", "quebra_completa"] = Field(...)
+    sentence_complexity: str = Field(..., description="Complexidade das frases.")
     paragraph_opener_patterns: List[str] = Field(..., description="Padrões para iniciar parágrafos.")
     paragraph_closer_patterns: List[str] = Field(..., description="Padrões para fechar parágrafos.")
 
 class Idiosyncrasies(BaseModel):
-    ellipses: Literal["raro", "ocasional", "frequente"] = Field(..., description="Uso de reticências.")
-    exclamations: Literal["raro", "ocasional", "frequente"] = Field(..., description="Uso de exclamações.")
-    questions: Literal["raro", "ocasional", "frequente"] = Field(..., description="Uso de interrogação.")
-    commas_before_conjunctions: Literal["raro", "ocasional", "frequente"] = Field(
-        ..., description="Uso de vírgulas antes de conjunções."
-    )
+    ellipses: Literal["raro", "ocasional", "frequente"] = Field(...)
+    exclamations: Literal["raro", "ocasional", "frequente"] = Field(...)
+    questions: Literal["raro", "ocasional", "frequente"] = Field(...)
+    commas_before_conjunctions: Literal["raro", "ocasional", "frequente"] = Field(...)
 
 class Punctuation(BaseModel):
-    style: Literal["padrão", "com_emojis", "com_interjeições"] = Field(
-        ..., description="Estilo de pontuação."
-    )
-    idiosyncrasies: Idiosyncrasies = Field(..., description="Vícios de pontuação.")
+    style: Literal["padrão", "com_emojis", "com_interjeições", "padrão_com_emojis"] = Field(...)
+    idiosyncrasies: Idiosyncrasies = Field(...)
 
 class RhetoricalDevices(BaseModel):
-    use_of_analogies: Literal["raro", "ocasional", "frequente"] = Field(..., description="Uso de analogias.")
-    use_of_metaphors: Literal["raro", "ocasional", "frequente"] = Field(..., description="Uso de metáforas.")
-    rhetorical_questions: Literal["raro", "ocasional", "frequente_no_final_parágrafo"] = Field(
-        ..., description="Uso de perguntas retóricas."
-    )
-    lists: Literal["raro", "ocasional", "bullet_points", "enumerações"] = Field(
-        ..., description="Uso de listas."
-    )
+    use_of_analogies: Literal["raro", "ocasional", "frequente"] = Field(...)
+    use_of_metaphors: Literal["raro", "ocasional", "frequente"] = Field(...)
+    rhetorical_questions: Literal["raro", "ocasional", "frequente_no_final_parágrafo"] = Field(...)
+    lists: Literal["raro", "ocasional", "bullet_points", "enumerações", "bullet_points_ocasional"] = Field(...)
 
 class Humor(BaseModel):
-    frequency: Literal["raro", "ocasional", "frequente"] = Field(..., description="Frequência de humor.")
-    themes: List[str] = Field(..., description="Temas de humor recorrentes.")
-    placement: Literal["início", "meio", "final", "normalmente_no_meio_do_texto"] = Field(
-        ..., description="Localização das piadas."
-    )
-    joke_formats: List[str] = Field(..., description="Formatos de piadas (ex: trocadilhos, situações engraçadas).")
+    frequency: Literal["raro", "ocasional", "frequente"] = Field(...)
+    themes: List[str] = Field(...)
+    placement: Literal["início", "meio", "final", "normalmente_no_meio_do_texto"] = Field(...)
+    joke_formats: List[str] = Field(...)
 
 class Interjections(BaseModel):
-    frequency: Literal["raro", "ocasional", "frequente"] = Field(..., description="Frequência de interjeições.")
-    examples: List[str] = Field(..., description="Exemplos de interjeições (ex: eita, ops, uau).")
+    frequency: Literal["raro", "ocasional", "frequente"] = Field(...)
+    examples: List[str] = Field(...)
 
 class Technicality(BaseModel):
-    use_of_technical_terms: Literal["baixo", "moderado", "alto"] = Field(..., description="Uso de termos técnicos.")
-    use_of_jargon: Literal["baixo", "moderado", "alto"] = Field(..., description="Uso de jargões.")
-    explanations: Literal["nunca", "às_vezes", "sempre_que_técnico"] = Field(
-        ..., description="Se termos técnicos são explicados."
-    )
+    use_of_technical_terms: Literal["baixo", "moderado", "alto"] = Field(...)
+    use_of_jargon: Literal["baixo", "moderado", "alto"] = Field(...)
+    explanations: Literal["nunca", "às_vezes", "sempre_que_técnico"] = Field(...)
 
 class CTA(BaseModel):
     pattern: str = Field(..., description="Padrão de chamadas para ação.")
-    examples: List[str] = Field(..., description="Exemplos de CTA (ex: Qual sua experiência?).")
+    examples: List[str] = Field(...)
 
 class Mentions(BaseModel):
-    frequency: Literal["baixo", "médio", "alto"] = Field(..., description="Frequência de menções (@).")
-    pattern: str = Field(..., description="Padrão de menções no texto.")
+    frequency: Literal["baixo", "médio", "alto"] = Field(...)
+    pattern: str = Field(...)
 
 class EmojiProfile(BaseModel):
-    choices: List[str] = Field(..., description="Emojis preferidos (ex: 🚀, 🤖).")
-    usage_pattern: str = Field(..., description="Padrão de uso dos emojis.")
-    avg_count: int = Field(..., description="Quantidade média de emojis por post.")
-    placement: List[str] = Field(..., description="Posições comuns de emojis.")
+    choices: List[str] = Field(...)
+    usage_pattern: str = Field(...)
+    avg_count: int = Field(...)
+    placement: List[str] = Field(...)
 
 class HashtagStrategy(BaseModel):
-    avg_count: int = Field(..., description="Número médio de hashtags por post.")
-    placement: Literal["final_do_post", "início_do_post", "misturado"] = Field(
-        ..., description="Posição típica das hashtags."
-    )
-    common_hashtags: List[str] = Field(..., description="Lista de hashtags comuns.")
+    avg_count: int = Field(...)
+    placement: Literal["final_do_post", "início_do_post", "misturado"] = Field(...)
+    common_hashtags: List[str] = Field(...)
+    separator: Literal["espaço", "quebra_de_linha"] = Field(...)
 
 class LinkSharing(BaseModel):
-    frequency: Literal["raro", "ocasional", "frequente"] = Field(..., description="Frequência de links.")
-    format: Literal["URL_encurtada", "URL_cheia"] = Field(..., description="Formato de links.")
+    frequency: Literal["raro", "ocasional", "frequente"] = Field(...)
+    format: Literal["URL_encurtada", "URL_cheia"] = Field(...)
 
 class Signature(BaseModel):
-    salutation: str = Field(..., description="Saudação característica.")
-    name_pattern: str = Field(..., description="Padrão de nome ou iniciais ao final.")
-    footer_notes: str = Field(..., description="Notas adicionais ou links de rodapé.")
+    salutation: str = Field(...)
+    name_pattern: str = Field(...)
+    footer_notes: str = Field(...)
 
 class TextualStyle(BaseModel):
+    language: str = Field(..., description="Idioma predominante dos posts.")
     topics: Topics
     tone: Tone
     vocabulary: Vocabulary
@@ -118,6 +106,7 @@ class TextualStyle(BaseModel):
     hashtag_profile: HashtagStrategy
     link_sharing: LinkSharing
     signature: Signature
+
 
 
 
