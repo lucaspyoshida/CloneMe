@@ -183,5 +183,7 @@ POSTS: {posts_lidos}
     ,
     model=constants.MODEL,
     output_schema=TextualStyle,
-    output_key="perfil"
+    output_key="perfil",
+    disallow_transfer_to_parent=True,
+    disallow_transfer_to_peers=True
 )

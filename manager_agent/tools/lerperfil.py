@@ -26,7 +26,8 @@ def baixar_posts_usuario(L: instaloader.Instaloader, nome_usuario: str, limite: 
     try:
         profile = instaloader.Profile.from_username(L.context, nome_usuario)
         id_usuario = profile.userid
-        base_path = f"posts/{id_usuario}"
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        base_path = os.path.join(script_dir, "posts", id_usuario)
         img_path = os.path.join(base_path, "img")
         os.makedirs(img_path, exist_ok=True)
 

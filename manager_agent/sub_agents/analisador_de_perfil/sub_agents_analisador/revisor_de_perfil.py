@@ -31,6 +31,8 @@ Sua missão é comparar criteriosamente o conteúdo do JSON `<perfil>` com os pa
 Um JSON completo no formato do `<perfil>`, validado ou ajustado conforme necessário.  
     """,
     output_key="perfil",
-    output_schema=StyleGuide
+    output_schema=StyleGuide,
+    disallow_transfer_to_parent=True,
+    disallow_transfer_to_peers=True
 )
     
