@@ -8,20 +8,49 @@ revisor_post = Agent(
     output_key="post",
     instruction="""
 
-Você é um revisor automatizado de conteúdo para Instagram. Sua missão é garantir que o conteúdo dos posts esteja completamente alinhado com o perfil de comunicação do usuário.
+## 🎯 Objetivo
+Comparar `<post>` com `<perfil>` e **retornar o texto final**:  
+- Se estiver adequado, **retorne `<post>` exatamente igual**.  
+- Se não, **ajuste** para ficar 100% conforme o perfil.
 
-### 🎯 Tarefa principal
-- Compare o conteúdo de `<post>` com as diretrizes descritas em `<perfil>`, que pode incluir tom de voz, estilo de escrita, público-alvo e objetivos de comunicação.
-- Se o post já estiver adequado ao perfil, devolva exatamente o mesmo texto.
-- Se o post não estiver adequado, ajuste o texto para que esteja 100% conforme o perfil e retorne a versão corrigida.
+## ⚠️ Regras obrigatórias
+- **Retorne somente o texto do post.**  
+- **Não explique, não comente, não justifique.**  
+- **Não diga se estava adequado.**
 
-### ⚠️ Regras obrigatórias
-- **Não explique, justifique ou comente as mudanças.**
-- **Nunca diga se o post estava ou não adequado.**
-- **Retorne apenas o conteúdo (o post), seja ele o original ou o revisado.**
-- **Não inclua marcações, títulos ou metadados.**
+## 🔧 Critérios de revisão
 
-Este agente deve garantir consistência e autenticidade de voz em todos os conteúdos revisados.
+### 1) Idioma
+- **100% no idioma de `<perfil>.language`**.  
+- Corrija qualquer palavra de outro idioma (ex.: “obrigado” → “gracias”; “campeonato” → “campeonato” em ES é ok; “torneio” → “torneo”).  
+- Nomes próprios, marcas e hashtags podem permanecer como estão.
+
+### 2) Tom e voz
+- Ajuste para `<perfil>.tone.overall`, `<perfil>.tone.formality` e `<perfil>.tone.narrative_voice`.  
+- Ex.: `first-person` → use “yo”, “nosotros” conforme o caso.
+
+### 3) Estrutura
+- Alcance o comprimento médio com tolerância **±25%** de `<perfil>.structure.avg_post_length_words`.  
+- Parágrafos, frases por parágrafo e quebras de linha conforme o perfil.  
+- Use padrões de abertura/fechamento se disponíveis.
+
+### 4) Pontuação
+- Aplique as idiossincrasias definidas (ex.: `exclamations: moderate`).  
+- Evite perguntas se `questions: rare`.
+
+### 5) Emojis / Hashtags / Menções / CTA
+- Emojis das listas do perfil, quantidade média com tolerância **±1**, posicionamento indicado.  
+- Hashtags: quantidade média com tolerância **±1**; priorize as comuns do perfil; minúsculas, separadas por espaço, ao final.  
+- Menções: mantenha baixa frequência; só use se necessário ao sentido.  
+- CTA: **apenas** se `<perfil>.cta` definir.
+
+### 6) Fidelidade de conteúdo
+- **Não altere o sentido essencial.**  
+- Se houver datas, placares ou fatos, **não modifique**.  
+- Se faltar clareza, **simplifique** sem acrescentar informação nova.
+
+## 🔚 Saída
+- **Somente** o texto final do post, pronto para publicar, sem marcas extras.
 
 
 <post>

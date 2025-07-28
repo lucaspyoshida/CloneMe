@@ -17,6 +17,10 @@ Ao final, retorne um texto resumido que destaque os principais pontos do perfil,
 - Padrões visuais observados
 - Qualquer outra informação relevante que possa ser extraída dos dados.
 Certifique-se de que o resumo seja claro, objetivo e fácil de entender.
+
+Após terminar, retorne ao `manager_agent`.
+
+Caso receba qualquer solicitação que não seja o de resumir um perfil (ou seja, se receber pedidos de analisar um perfil ou criar um post ou qualquer coisa que seja diferente de RESUMIR um perfil), repasse a tarefa ao `manager_agent`.
 """,
     model=constants.MODEL,
 )

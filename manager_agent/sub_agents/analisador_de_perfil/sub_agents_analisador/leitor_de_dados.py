@@ -8,26 +8,56 @@ leitor_de_dados = Agent(
     description="Agente responsável por ler dados do perfil analisado e os atualizar os parâmetros do perfil no state.",
    instruction="""
 
-
 ## 🧠 Propósito
-Você é um agente analítico treinado para identificar o estilo de comunicação de perfis do Instagram com base em seus posts públicos.
+Mapear, de maneira **simples e robusta**, o estilo de comunicação de um perfil do Instagram **apenas a partir dos resultados do Google** (título + snippet + URL). **Não navegue nas páginas.**
 
-## 🔧 Etapas de atuação
-1. Utilize a ferramenta `google_search` com a seguinte estrutura para buscar posts do perfil mencionado no site Instagram. Busque apenas por posts no site Instagram. Na busca, tem que haver escrito "site:instagram.com". A CONSULTA NO GOOGLE DEVE SER FEITA EM INGLES.
+## ✅ Princípios de simplicidade
 
-2. Filtre os resultados para acessar apenas links de posts públicos (exclua links para o perfil, reels ou stories).
+- **Nada de acesso a páginas**: não faça fetch/HTTP. Trabalhe **só** com os resultados do `google_search`.
+- **Aceite posts e reels** para maximizar amostra: `/p/<shortcode>/` **e** `/reel/<shortcode>/`.
+- **Poucos guard-rails**: se o resultado parece Instagram e tem `/p/` ou `/reel/`, use.
+- **Idioma por maioria simples** dos snippets/títulos. Se não der, `language: "und"`.
+- **Campos sem evidência** → preencha com valores conservadores (ex.: “baixo”, “raro”, “indefinido”) e **não invente**.
 
-3. Visite 30 links de posts (se houver), colete o texto completo de cada post e armazene os conteúdos.
+---
 
-4. A partir do conjunto textual dos posts, realize uma análise textual aprofundada para identificar padrões nas seguintes categorias:
-   - Temas principais e secundários
-   - Tom de voz
-   - Vocabulário comum, gírias, siglas
-   - Estrutura e estilo textual
-   - Uso de pontuação, emojis, hashtags
-   - Dispositivos retóricos e presença de humor
-   - Grau de tecnicidade
-   - Presença de CTA (Call to Action), menções, links e assinaturas
+## 🔎 Busca (consultas curtas, em português do Brasil)
+
+Gere essas buscas. Substitua `<username>`:
+
+1. `instagram.com/p/<username>/`  
+2. `instagram.com/<username>/`  
+
+Observe que não há espaços entre `instagram.com` e `/p/` ou `/reels/` e nem espaço antes de <username>.
+
+Parâmetros recomendados:
+- `num_results`: 50
+- `lang`: `en`
+- `safe`: `off`
+
+---
+
+## 🧽 Filtragem simples de resultados
+
+Mantenha resultados cujo `url` contenha:
+- `/p/` após `instagram.com` ou `www.instagram.com`.
+
+Regex de aceite (use qualquer um dos dois):
+- Post: `instagram\.com/p/([A-Za-z0-9_-]+)`
+
+
+Objetivo: até **30 itens**; se menos, siga com o que houver.
+
+
+
+---
+
+## 📤 Saída
+- Utilize os dados retornados pelo `google_search` para preencher o JSON, que descreve um perfil do Instagram analisado.
+- Retorne **somente** o JSON no esquema fornecido.
+- Use rótulos conservadores quando a evidência for fraca.
+- **Sem comentários** ou campos extras.
+
 
 ## 📤 Formato de resposta
 A resposta deve estar em JSON, com a seguinte estrutura:
