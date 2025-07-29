@@ -3,7 +3,6 @@ import logging
 import sys
 
 import base64
-from io import BytesIO
 from manager_agent.tools.descrever_uma_img import descreverimagem
 from os import getenv
 
@@ -13,6 +12,7 @@ from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.types import Message
+from aiogram.utils.chat_action import ChatActionSender
 import dotenv
 
 dotenv.load_dotenv()
@@ -26,27 +26,28 @@ dp = Dispatcher()
 @dp.message()
 async def echo_handler(message: Message) -> None:
     # try:
-    print(message.chat.id)
     id = message.from_user.id
     if message.text:
-        await bot.send_chat_action(message.chat.id, 'typing')
+        async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
+        # await bot.send_chat_action(message.chat.id, 'typing')
         # If the message is text, we can use it directly
-        response = await conversar(message.text, str(id))
-        await message.answer(response)
+            response = await conversar(message.text, str(id))
+            await message.answer(response)
     elif message.photo:
-        await bot.send_chat_action(message.chat.id, 'upload_photo')
+        async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
+            await bot.send_chat_action(message.chat.id, 'upload_photo')
 
-        photo = message.photo[-1]
-        file = await bot.get_file(photo.file_id)
-        file_data = await bot.download(file.file_id)
+            photo = message.photo[-1]
+            file = await bot.get_file(photo.file_id)
+            file_data = await bot.download(file.file_id)
 
-        image_bytes = file_data.read()
-        base64_str = base64.b64encode(image_bytes).decode('utf-8')
-        descricao = descreverimagem(base64_str)
-        print(descricao)
+            image_bytes = file_data.read()
+            base64_str = base64.b64encode(image_bytes).decode('utf-8')
+            descricao = descreverimagem(base64_str)
+            print(descricao)
 
-        response = await conversar(descricao, str(id))
-        await message.answer(response)
+            response = await conversar(descricao, str(id))
+            await message.answer(response)
 
     # elif message.document and message.document.mime_type.startswith("image/"):
     #     await bot.send_chat_action(message.chat.id, 'upload_photo')
