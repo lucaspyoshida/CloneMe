@@ -3,7 +3,6 @@ from google.adk.runners import Runner
 from manager_agent.agent import root_agent
 from google.genai.types import Content, Part
 
-
 async def conversar(msg: str, id: str):
     db_url = "sqlite:///./my_agent_data.db"
     memoria = DatabaseSessionService(db_url=db_url)    

@@ -90,6 +90,7 @@ class Signature(BaseModel):
     footer_notes: str = Field(...)
 
 class TextualStyle(BaseModel):
+    perfil_base: str = Field(..., description="Nome do perfil base de onde o estilo foi extraído.")
     language: str = Field(..., description="Idioma predominante dos posts.")
     topics: Topics
     tone: Tone

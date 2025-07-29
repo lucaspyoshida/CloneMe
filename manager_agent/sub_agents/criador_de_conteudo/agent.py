@@ -5,6 +5,6 @@ from .sub_agents_criador.revisor_post import revisor_post
 
 sequencia_criador = SequentialAgent(
     name="sequencia_criador",
-    description="Agente responsável por coordenar a criação de conteúdo, acionando o agente `buscador_internet` para coletar informações relevantes e, em seguida, o `criador_post` para gerar o post final.",
+    description="Coordena a criação de posts textuais acionando buscador_internet para pesquisa e criador_post para redação e revisor_post para revisão, sendo usado apenas quando o pedido não envolve imagens, descrição de imagens nem análise de perfil.",
     sub_agents=[buscador_internet, criador_post,revisor_post]
 )
