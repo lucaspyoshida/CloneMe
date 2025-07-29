@@ -13,9 +13,6 @@ Um bot inteligente do Telegram que analisa perfis do Instagram e clona o estilo 
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Fluxo dos Agentes](#-fluxo-dos-agentes)
 - [Tecnologias](#️-tecnologias)
-- [Desenvolvimento](#-desenvolvimento)
-- [Contribuição](#-contribuição)
-- [Licença](#-licença)
 
 ## 🎯 Visão Geral
 
