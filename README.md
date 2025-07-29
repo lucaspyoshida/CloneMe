@@ -156,7 +156,7 @@ Especializado em legendas para imagens através de:
 - **Python 3.8+**
 - **Conta no Telegram** (para criar o bot)
 - **Chaves de API da OpenAI**
-- **Chaves de API do Google Search** (opcional)
+- **Chaves de API do Google Console** 
 
 ### Passos
 
@@ -193,10 +193,7 @@ OPENAI_API_KEY=sua_chave_openai_aqui
 
 # Google Search API (opcional, para busca de perfis)
 GOOGLE_API_KEY=sua_chave_google_aqui
-GOOGLE_CSE_ID=seu_cse_id_aqui
 
-# Configurações de logging
-LOG_LEVEL=INFO
 ```
 
 ### 🔑 Como obter as chaves:
@@ -213,12 +210,10 @@ LOG_LEVEL=INFO
 3. Vá em "API Keys" e crie uma nova chave
 4. Copie a chave gerada (mantenha segura!)
 
-#### 🔍 **Google Search API** (Opcional)
+#### 🔍 **Google Console API Key** (Opcional)
 1. Acesse [Google Cloud Console](https://console.cloud.google.com)
 2. Crie um projeto ou selecione um existente
-3. Ative a "Custom Search API"
-4. Crie um Custom Search Engine em [CSE](https://cse.google.com)
-5. Configure para buscar em toda a web
+3. Ative uma API Key
 
 ## 📱 Como Usar
 
@@ -231,8 +226,6 @@ python bot.py
 # Método 2: Com Poetry
 poetry run python bot.py
 
-# Método 3: Com logs detalhados
-LOG_LEVEL=DEBUG python bot.py
 ```
 
 ### 💬 Comandos e Interações
@@ -423,7 +416,8 @@ sequenceDiagram
 - **asyncio** - Programação assíncrona
 
 ### **Inteligência Artificial**
-- **OpenAI GPT-4** - Modelo de linguagem principal
+- **Google SDK** - Interface de agentes utilizados
+- **OpenAI GPT-4** - Modelo de linguagem
 - **Custom Prompts** - Prompts especializados por agente
 
 ### **Telegram Bot**
@@ -440,7 +434,6 @@ sequenceDiagram
 - **Poetry** - Gerenciamento de dependências
 - **python-dotenv** - Variáveis de ambiente
 - **SQLite** - Banco de dados local (via LangGraph)
-- **logging** - Sistema de logs estruturado
 
 ### **Desenvolvimento**
 - **Type Hints** - Tipagem estática Python
