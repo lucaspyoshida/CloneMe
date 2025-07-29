@@ -1,5 +1,4 @@
 from google.adk.agents import Agent
-from manager_agent.tools.buscar_dados_perfil import buscarperfil
 from manager_agent.tools.state_schema import StyleGuide
 from ....shared import constants
 
